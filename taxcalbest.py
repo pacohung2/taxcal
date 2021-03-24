@@ -3,6 +3,8 @@ Pair programming project
 by Paco Hung
 3/3/2021
 '''
+
+
 def income():
     try:
         global h, w, seperate, joint
@@ -14,15 +16,16 @@ def income():
         print("Please input a number...")
         income()
 
+
 def tax(type, x):
-    global xtax, xstandard, xflag
+    global xtax, xstandard, xmpf, xflag
 
     if type == 'seperate':
         if x*0.05 <= 18000:
             xmpf = x*0.05
         else:
             xmpf = 18000
-            
+
         xnet = max(0, x-xmpf-132000)
 
     elif type == 'joint':
@@ -30,7 +33,7 @@ def tax(type, x):
             xmpf = x*0.05
         else:
             xmpf = 36000
-            
+
         xnet = max(0, x-xmpf-264000)
 
     xstandard = (x-xmpf)*0.15
@@ -64,13 +67,13 @@ def tax(type, x):
         xtax += xnet*0.02
         xnet = 0
 
-    if xtax < xstandard:
+    if xtax <= xstandard:
         xflag = 0
-        return xtax, xflag
     elif xtax > xstandard:
         xflag = 1
         xtax = xstandard
-        return xtax, xflag
+
+    return xmpf, round(xtax, 2), xflag
 
 
 def menu():
@@ -101,18 +104,23 @@ def menu():
         .format(h, w, seperate, joint)
     )
 
+
 if __name__ == '__main__':
     try:
         print("Welcome! To begin, please enter the following...\n")
         income()
         menu()
-        select = input("Selection: ")
-        
+        select = int(input("Selection: "))
+
         while select != 0:
             if select == 1:
                 seperate = 0
 
                 tax('seperate', h)
+
+                print("-----------------------------------------------")
+
+                print("Your MPF deduction: HK${}".format(xmpf))
 
                 if xflag == 1:
                     print("Your tax payable: HK${} (At standard rate)".format(xtax))
@@ -123,6 +131,10 @@ if __name__ == '__main__':
 
                 tax('seperate', w)
 
+                print("\n")
+
+                print("Spouse's MPF deduction: HK${}".format(xmpf))
+
                 if xflag == 1:
                     print("Spouse's tax payable: HK${} (At standard rate)".format(xtax))
                 else:
@@ -130,7 +142,9 @@ if __name__ == '__main__':
 
                 seperate += xtax
 
-                print("Combined seperate: HK${}".format(seperate))
+                print("\n")
+
+                print("Combined seperate tax payable: HK${}".format(seperate))
 
                 input("Press Enter to return to the menu...")
 
@@ -140,6 +154,10 @@ if __name__ == '__main__':
                 tax('joint', h+w)
 
                 joint += xtax
+
+                print("-----------------------------------------------")
+
+                print("Total MPF deduction: HK${}".format(xmpf))
 
                 if xflag == 1:
                     print("Joint tax payable: HK${} (At standard rate)".format(xtax))
@@ -154,22 +172,24 @@ if __name__ == '__main__':
                 else:
                     print("Seperate assessment = HK${}".format(seperate))
                     print("Joint assessment = HK${}".format(joint))
-
-                if seperate < joint:
-                    print("It is recommended that you select seperate assessment")
-                elif joint < seperate:
-                    print("It is recommended that you select joint assessment")
-                else:
-                    print("Both assessment methods are equal")
+                    
+                    if seperate < joint:
+                        print("It is recommended that you select seperate assessment")
+                    elif joint < seperate:
+                        print("It is recommended that you select joint assessment")
+                    else:
+                        print("Both assessment methods are equal")
 
                 input("Press Enter to return to the menu...")
+
             elif select == 4:
                 income()
                 input("Press Enter to return to the menu...")
-            elif select ==0:
+
+            elif select == 0:
                 break
             else:
-                print ("Invalid input")
+                print("Invalid input")
 
             menu()
             select = int(input("Selection: "))
