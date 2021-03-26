@@ -9,7 +9,14 @@ def income():
     try:
         global h, w, seperate, joint
         h = float(input("Your personal income: "))
+        if not h >= 0:
+            print("Non-negative numbers only...")
+            h = float(input("Your personal income: "))
+
         w = float(input("Spouse's personal income: "))
+        if not h >= 0:
+            print("Non-negative numbers only...")
+            w = float(input("Spouse's personal income: "))
         seperate = ' no data'
         joint = ' no data'
     except:
@@ -73,7 +80,7 @@ def tax(type, x):
         xflag = 1
         xtax = xstandard
 
-    return xmpf, round(xtax, 2), xflag
+    return xmpf, int(xtax), xflag
 
 
 def menu():
