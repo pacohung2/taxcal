@@ -80,7 +80,9 @@ def tax(type, x):
         xflag = 1
         xtax = xstandard
 
-    return xmpf, int(xtax), xflag
+    xtax = int(xtax)
+
+    return xmpf, xtax, xflag
 
 
 def menu():
