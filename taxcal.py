@@ -24,7 +24,7 @@ def income():
         income()
 
 
-def tax(type, x):
+def tax(type, x, y):
     global xtax, xstandard, xmpf, xflag
 
     if type == 'seperate':
@@ -36,10 +36,19 @@ def tax(type, x):
         xnet = max(0, x-xmpf-132000)
 
     elif type == 'joint':
-        if x*0.05 <= 36000:
+        if x*0.05 <= 18000:
             xmpf = x*0.05
         else:
-            xmpf = 36000
+            xmpf = 18000
+
+        if y*0.05 <= 18000:
+            ympf = y*0.05
+        else:
+            ympf = 18000
+
+        x = x+y
+
+        xmpf = xmpf+ympf
 
         xnet = max(0, x-xmpf-264000)
 
@@ -125,7 +134,7 @@ if __name__ == '__main__':
             if select == 1:
                 seperate = 0
 
-                tax('seperate', h)
+                tax('seperate', h, 0)
 
                 print("-----------------------------------------------")
 
@@ -138,7 +147,7 @@ if __name__ == '__main__':
 
                 seperate += xtax
 
-                tax('seperate', w)
+                tax('seperate', w, 0)
 
                 print("\n")
 
@@ -160,7 +169,7 @@ if __name__ == '__main__':
             elif select == 2:
                 joint = 0
 
-                tax('joint', h+w)
+                tax('joint', h, w)
 
                 joint += xtax
 
